@@ -1,8 +1,10 @@
-process.stdout.write(`enter your string: `);
+import { consoleOutput, consoleRead, reverse } from "./task1.modules";
+
+consoleOutput(`enter your string: `);
 process.stdin.on('readable', () => {
-    const chunk = process.stdin.read();
+    const chunk = consoleRead();
     if (chunk !== null) {
-        const result = chunk.toString().split("").reverse().join("");
-        process.stdout.write(`result: ${result}`);
+        const result = reverse(chunk.toString());
+        consoleOutput(`result: ${result}`);
     }
 });

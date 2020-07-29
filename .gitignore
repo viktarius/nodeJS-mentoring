@@ -1,3 +1,5 @@
 .idea
 node_modules
 dist
+/csv/*.json
+/csv/*.txt
