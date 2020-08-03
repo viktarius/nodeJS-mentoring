@@ -1,5 +1,3 @@
 .idea
-node_modules
-dist
-/csv/*.json
-/csv/*.txt
+*/node_modules
+*/dist
