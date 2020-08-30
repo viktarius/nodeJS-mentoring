@@ -1,7 +1,7 @@
 import { DatabaseService } from "./database.service";
 import { UserRequest } from "../models/user.model";
 
-export class UserService extends DatabaseService{
+export class UserService extends DatabaseService {
     constructor() {
         super();
     }
@@ -10,10 +10,19 @@ export class UserService extends DatabaseService{
         return this.client.query("SELECT * FROM users")
     }
 
-    addUser(user: UserRequest){
+    addUser(user: UserRequest) {
         const query = {
             text: 'INSERT INTO users(id, login, password, age, isdeleted) VALUES($1, $2, $3, $4, $5)',
             values: [user.id, user.login, user.password, user.age, user.isDeleted]
+        };
+
+        return this.client.query(query)
+    }
+
+    updateUser(id: string, user: any) {
+        const query = {
+            text: 'UPDATE users set login = $2, password = $3, age = $4 WHERE id = $1',
+            values: [id, user.login, user.password, user.age]
         };
 
         return this.client.query(query)

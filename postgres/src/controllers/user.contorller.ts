@@ -31,7 +31,16 @@ router.post('/add', validator.body(userSchema), async (req, res) => {
     }catch (e) {
         res.status(500).send(e.message);
     }
-    res.send("hello new user");
+});
+
+router.put('/update/:id', validator.body(userSchema), async (req, res) => {
+    const id = req.params.id;
+    try{
+        await userService.updateUser(id ,req.body);
+        res.status(204).send('ok');
+    }catch (e) {
+        res.status(500).send(e.message);
+    }
 });
 
 router.delete('/:id', async (req, res) => {
