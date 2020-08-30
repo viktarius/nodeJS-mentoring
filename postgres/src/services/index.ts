@@ -1,5 +1,5 @@
-import { DatabaseService } from "./database.service";
+import { UserService } from "./user.service";
 
-const db = new DatabaseService();
+const userService = new UserService();
 
-export {db};
+export {userService};

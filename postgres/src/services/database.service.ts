@@ -6,11 +6,11 @@ export class DatabaseService {
 
     constructor() {
         this.client = new Client(config);
-        this.client.connect().then()
+        this.client.connect();
     }
 
-    getAll(){
-        return this.client.query("SELECT * FROM users")
+    disconnect() {
+        this.client.end();
     }
 
 }
