@@ -1,4 +1,5 @@
 import { DatabaseService } from "./database.service";
+import { UserRequest } from "../models/user.model";
 
 export class UserService extends DatabaseService{
     constructor() {
@@ -7,6 +8,15 @@ export class UserService extends DatabaseService{
 
     getAll() {
         return this.client.query("SELECT * FROM users")
+    }
+
+    addUser(user: UserRequest){
+        const query = {
+            text: 'INSERT INTO users(id, login, password, age, isdeleted) VALUES($1, $2, $3, $4, $5)',
+            values: [user.id, user.login, user.password, user.age, user.isDeleted]
+        };
+
+        return this.client.query(query)
     }
 
     getUserById(id: string): Promise<any> {
