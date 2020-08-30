@@ -1,5 +1,8 @@
 import express from "express";
+import dotenv from "dotenv";
 import router from "./controllers";
+
+dotenv.config();
 
 const PORT = Number(process.env.PORT) || 3000;
 const app: express.Application = express();
