@@ -23,7 +23,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/add', validator.body(userSchema), async (req, res) => {
+router.post('/', validator.body(userSchema), async (req, res) => {
     const newUser = createUser(req.body);
     try{
         const createdUser = await userService.addUser(userMapper.toBase(newUser));
