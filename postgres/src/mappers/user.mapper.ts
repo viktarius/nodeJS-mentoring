@@ -4,15 +4,21 @@ import { User, UserRequest } from "../models/user.model";
 export class UserMapper extends DataMapper {
     toDomain(data: UserRequest): User {
         return {
-            ...data,
-            isDeleted: !!data.isDeleted
+            id: data.id,
+            login: data.login,
+            password: data.password,
+            age: data.age,
+            isDeleted: !!data.isdeleted
         }
     }
 
     toBase(data: User): UserRequest {
         return {
-            ...data,
-            isDeleted: data.isDeleted ? 1 : 0
-        }
+            id: data.id,
+            login: data.login,
+            password: data.password,
+            age: data.age,
+            isdeleted: data.isDeleted ? 1 : 0
+        };
     }
 }

@@ -1,5 +1,3 @@
-import { UserService } from "./user.service";
-
-const userService = new UserService();
+import * as userService from "./user.service";
 
 export {userService};

@@ -1,16 +1,11 @@
-import { Client } from "pg";
+import Knex from "knex";
+
 import { config } from "../config/db.config";
 
-export class DatabaseService {
-    client: Client;
-
-    constructor() {
-        this.client = new Client(config);
-        this.client.connect();
-    }
-
-    disconnect() {
-        this.client.end();
-    }
-
-}
+export const pg = Knex({
+    client: 'pg',
+    connection: {
+        ...config
+    },
+    acquireConnectionTimeout: 2000
+});
