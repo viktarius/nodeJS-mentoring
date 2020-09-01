@@ -1,24 +1,24 @@
 import { knex as client } from "./database.service";
-import { UserRequest } from "../models/user.model";
+import { User } from "../models/user.model";
 
 const table: string = 'users';
 
-export const getAllUsers = (): Promise<UserRequest[]> => {
+export const getAllUsers = (): Promise<User[]> => {
     return client(table).select('*');
 };
 
-export const getUserById = (id: string): Promise<UserRequest[]> => {
+export const getUserById = (id: string): Promise<User[]> => {
     return client(table).select().where({'id': id});
 };
 
-export const addUser = (user: UserRequest): Promise<UserRequest[]> => {
+export const addUser = (user: User): Promise<User[]> => {
     return client(table).insert(user).returning('*')
 };
 
 export const deleteUser = (id: string) => {
-    return client(table).where({'id': id}).update({isdeleted: 1})
+    return client(table).where({'id': id}).update({isDeleted: true})
 };
 
-export const updateUser = (id: string, user: any): Promise<UserRequest[]> => {
+export const updateUser = (id: string, user: any): Promise<User[]> => {
     return client(table).where({'id': id}).update({...user}).returning('*')
 };

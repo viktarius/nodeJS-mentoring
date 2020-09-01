@@ -2,7 +2,6 @@ import express from "express";
 import { createValidator } from "express-joi-validation";
 import { userService } from "../services";
 import { userSchema } from "../validators";
-import { userMapper } from "../mappers";
 import { createUser } from "../utils/user.util";
 
 const router = express.Router();
@@ -17,7 +16,7 @@ router.get('/:id', async (req, res) => {
     const id = req.params.id;
     try {
         const user = await userService.getUserById(id);
-        res.json(userMapper.toDomain(user[0]));
+        res.json(user[0]);
     } catch (e) {
         res.status(404).send('user not found');
     }
@@ -26,7 +25,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', validator.body(userSchema), async (req, res) => {
     const newUser = createUser(req.body);
     try{
-        const createdUser = await userService.addUser(userMapper.toBase(newUser));
+        const createdUser = await userService.addUser(newUser);
         res.status(201).json(createdUser[0]);
     }catch (e) {
         res.status(500).send(e.message);
