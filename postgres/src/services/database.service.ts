@@ -1,6 +1,7 @@
 import Knex from "knex";
 
 import { config } from "../config/db.config";
+import { users } from "../seed/users";
 
 export const knex = Knex({
     client: 'pg',
@@ -19,5 +20,11 @@ export const initDB = () => knex.schema.hasTable('users').then((exists) => {
             table.integer('age');
             table.boolean('isDeleted');
         })
+    }
+});
+
+export const initData = () => knex('users').select('*').then((data) => {
+    if(data.length === 0){
+        return knex('users').insert(users)
     }
 });
