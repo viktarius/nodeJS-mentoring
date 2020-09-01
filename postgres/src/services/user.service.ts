@@ -1,4 +1,4 @@
-import { pg as client } from "./database.service";
+import { knex as client } from "./database.service";
 import { UserRequest } from "../models/user.model";
 
 const table: string = 'users';
