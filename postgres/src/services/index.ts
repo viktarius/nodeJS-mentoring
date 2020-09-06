@@ -1,3 +1,4 @@
-import * as userService from "./user.service";
+import * as userService from './user.service';
+import * as groupService from './group.service';
 
-export {userService};
+export {userService, groupService};
