@@ -1,5 +1,5 @@
 import { knex as client } from "./database.service";
-import { User } from "../models/user.model";
+import { User } from "../models";
 
 const table: string = 'users';
 
@@ -21,4 +21,15 @@ export const deleteUser = (id: string) => {
 
 export const updateUser = (id: string, user: any): Promise<User[]> => {
     return client(table).where({'id': id}).update({...user}).returning('*')
+};
+
+export const addUserToGroup = (groupId: string, userId: string) => {
+    return client.transaction((trx) => {
+        client('users_groups').insert({
+            user_id: userId,
+            group_id: groupId
+        })
+            .then(trx.commit)
+            .catch(trx.rollback)
+    })
 };
