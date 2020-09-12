@@ -33,6 +33,11 @@ export const initDB = async () => {
                 table.string('permissions', 100);
             })
         }
+    });
+    await knex.schema.createTable('users_groups', function (table) {
+        table.increments('id').primary();
+        table.integer('user_id').references('users.id').onDelete('CASCADE');
+        table.integer('group_id').references('groups.id').onDelete('CASCADE');
     })
 };
 
@@ -44,5 +49,18 @@ export const initData = async () => {
     const groupData = await knex('groups').select('*');
     if (groupData.length === 0) {
         await knex('groups').insert(groups.map(groupMapper.toBase));
+    }
+    const userGroupData = await knex('users_groups').select('*');
+    if (userGroupData.length === 0) {
+        await knex('users_groups').insert([{
+            user_id: 1,
+            group_id: 1
+        }, {
+            user_id: 2,
+            group_id: 2
+        }, {
+            user_id: 3,
+            group_id: 1
+        }])
     }
 };
