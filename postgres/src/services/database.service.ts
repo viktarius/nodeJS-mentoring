@@ -34,10 +34,14 @@ export const initDB = async () => {
             })
         }
     });
-    await knex.schema.createTable('users_groups', function (table) {
-        table.increments('id').primary();
-        table.integer('user_id').references('users.id').onDelete('CASCADE');
-        table.integer('group_id').references('groups.id').onDelete('CASCADE');
+    await knex.schema.hasTable('users_groups').then((exists) => {
+        if (!exists) {
+            return knex.schema.createTable('users_groups', function (table) {
+                table.increments('id').primary();
+                table.integer('user_id').references('users.id').onDelete('CASCADE');
+                table.integer('group_id').references('groups.id').onDelete('CASCADE');
+            })
+        }
     })
 };
 

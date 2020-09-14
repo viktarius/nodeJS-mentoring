@@ -1,5 +1,6 @@
 import express from "express";
 import { createValidator } from "express-joi-validation";
+
 import { userService } from "../services";
 import { userSchema } from "../validators";
 import { createUser } from "../utils/user.util";
@@ -62,4 +63,4 @@ router.post('/add-group', async (req, res) => {
     }
 });
 
-export { router as userRouter };
+export { router };

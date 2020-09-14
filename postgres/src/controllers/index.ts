@@ -1,6 +1,6 @@
 import express from "express";
-import { userRouter } from "./user.contorller";
-import { groupRouter } from "./group.controller";
+import { router as userRouter } from "./user.controller";
+import { router as groupRouter } from "./group.controller";
 
 const router = express.Router();
 
