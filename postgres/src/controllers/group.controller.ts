@@ -14,7 +14,7 @@ router.get('/:id', async (req, res, next) => {
     const id = req.params.id;
     try {
         const group = await groupService.getGroupById(id);
-        if (group) {
+        if (group.length) {
             res.json(groupMapper.toDomain(group[0]))
         }
         next(new HttpException(404, 'group not found'))

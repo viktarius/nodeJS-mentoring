@@ -1,5 +1,6 @@
 import { knex as client } from "./database.service";
 import { Group } from "../models";
+import { HttpException } from "../exeption";
 
 const table: string = 'groups';
 
@@ -16,9 +17,21 @@ export const addGroup = (group: Group): Promise<Array<Group>> => {
 };
 
 export const deleteGroup = (id: string) => {
-    return client(table).where({'id': id}).del()
+    return client(table).where({'id': id}).then(rows => {
+        if (rows.length !== 1) {
+            throw new HttpException(404, 'group not found')
+        } else {
+            return client(table).where({'id': id}).del()
+        }
+    })
 };
 
 export const updateGroup = (id: string, group: any): Promise<Array<Group>> => {
-    return client(table).where({'id': id}).update({...group}).returning('*')
+    return client(table).where({'id': id}).then(rows => {
+        if (rows.length !== 1) {
+            throw new HttpException(404, 'group not found')
+        } else {
+            return client(table).where({'id': id}).update({...group}).returning('*')
+        }
+    })
 };

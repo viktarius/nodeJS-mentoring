@@ -1,5 +1,6 @@
 import { knex as client } from "./database.service";
 import { User } from "../models";
+import { HttpException } from "../exeption";
 
 const table: string = 'users';
 
@@ -16,11 +17,24 @@ export const addUser = (user: User): Promise<User[]> => {
 };
 
 export const deleteUser = (id: string) => {
-    return client(table).where({'id': id}).update({isDeleted: true})
+    return client(table).where({'id': id}).then(rows => {
+        if (rows.length !== 1) {
+            throw new HttpException(404, 'user not found')
+        } else {
+            return client(table).where({'id': id}).update({isDeleted: true})
+        }
+    });
 };
 
 export const updateUser = (id: string, user: any): Promise<User[]> => {
-    return client(table).where({'id': id}).update({...user}).returning('*')
+    return client(table).where({'id': id}).then(rows => {
+            if (rows.length !== 1) {
+                throw new HttpException(404, 'user not found')
+            } else {
+                return client(table).where({'id': id}).update({...user}).returning('*')
+            }
+        }
+    );
 };
 
 export const addUserToGroup = (groupId: string, userId: string) => {

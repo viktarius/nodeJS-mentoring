@@ -21,7 +21,7 @@ router.get('/:id', async (req, res, next) => {
     try {
         const id = req.params.id;
         const user = await userService.getUserById(id);
-        if(user){
+        if (user.length) {
             res.json(user[0]);
         }
         next(new HttpException(404, 'user not found'));
@@ -46,7 +46,7 @@ router.put('/:id', validator.body(userSchema), async (req, res, next) => {
         const updatedUser = await userService.updateUser(id, req.body);
         res.json(updatedUser);
     } catch (e) {
-        next(new HttpException(500, e.message));
+        next(new HttpException(e?.status || 500, e.message));
     }
 });
 
