@@ -1,55 +1,55 @@
 import express from "express";
-import { createValidator } from 'express-joi-validation';
-
-import { groupService } from "../services";
-import { groupMapper } from "../mappers";
-import { groupSchema } from '../validators';
+import { groupService } from "../core/services";
+import { groupMapper } from "../core/mappers";
+import { HttpException } from "../core/exeption";
 
 const router = express.Router();
-const validator = createValidator();
 
 router.get("/", async (req, res) => {
     const groups = await groupService.getAllGroups();
     res.json(groups.map(groupMapper.toDomain))
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
     const id = req.params.id;
     try {
         const group = await groupService.getGroupById(id);
-        res.json(groupMapper.toDomain(group[0]))
+        if (group.length) {
+            res.json(groupMapper.toDomain(group[0]))
+        }
+        next(new HttpException(404, 'group not found'))
     } catch (e) {
-        res.status(404).send('group nor found');
+        next(new HttpException(500, e.message));
     }
 });
 
-router.post('/', validator.body(groupSchema), async (req, res) => {
+router.post('/', async (req, res, next) => {
     try {
-        const createdGroup = await groupService.addGroup(groupMapper.toBase(req.body));
+        const createdGroup = await groupService.addGroup(req.body);
         res.status(201).json(groupMapper.toDomain(createdGroup[0]))
     } catch (e) {
-        res.status(500).send(e.message);
+        next(new HttpException(500, e.message));
     }
 });
 
-router.put('/:id', validator.body(groupSchema), async (req, res) => {
+router.put('/:id', async (req, res, next) => {
     const id = req.params.id;
     try {
         const updatedGroup = await groupService.updateGroup(id, groupMapper.toBase(req.body));
         res.json(groupMapper.toDomain(updatedGroup));
     } catch (e) {
-        res.status(404).send(e.message);
+        next(new HttpException(500, e.message));
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req, res, next) => {
     const id = req.params.id;
     try {
         await groupService.deleteGroup(id);
         res.send('ok');
     } catch (e) {
-        res.status(404).send('group not found')
+        next(new HttpException(500, e.message));
     }
 });
 
-export { router };
+export { router as groupRouter };

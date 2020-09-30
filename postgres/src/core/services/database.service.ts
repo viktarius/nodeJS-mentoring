@@ -1,6 +1,6 @@
 import Knex from "knex";
 
-import { config } from "../config/db.config";
+import { config } from "../../config/db.config";
 import { users } from "../seed/users";
 import { groups } from "../seed/groups";
 import { groupMapper } from "../mappers";
@@ -36,13 +36,13 @@ export const initDB = async () => {
     });
     await knex.schema.hasTable('users_groups').then((exists) => {
         if (!exists) {
-            return knex.schema.createTable('users_groups', function (table) {
+            return  knex.schema.createTable('users_groups', function (table) {
                 table.increments('id').primary();
                 table.integer('user_id').references('users.id').onDelete('CASCADE');
                 table.integer('group_id').references('groups.id').onDelete('CASCADE');
             })
         }
-    })
+    });
 };
 
 export const initData = async () => {
