@@ -6,7 +6,7 @@ import { SECRET_KEY } from "../config/app.config";
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+router.post('/login', async (req, res) => {
     const {login, password} = req.body;
     const users = await userService.getAllUsers();
     const user = users.find(({login: user_login, password: user_password}) => user_login === login && user_password === password);
