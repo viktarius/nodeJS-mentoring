@@ -2,7 +2,7 @@ import express from "express";
 import cors, { CorsOptions } from 'cors';
 
 import router from "./routes";
-import { PORT } from "./config/app.config";
+import { AVAILABLE_DOMAIN, PORT } from "./config/app.config";
 import { initData, initDB } from "./core/services/database.service";
 import { errorMiddleware, infoLoggerMiddleware } from "./core/middleware";
 import { logger } from "./core/logger";
@@ -10,7 +10,7 @@ import { logger } from "./core/logger";
 const app: express.Application = express();
 
 const corsOptions: CorsOptions = {
-    origin: 'http://localhost'
+    origin: AVAILABLE_DOMAIN
 };
 
 app.use(cors(corsOptions));
