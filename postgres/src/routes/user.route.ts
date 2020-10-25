@@ -4,12 +4,11 @@ import { userService } from "../core/services";
 import { userSchema } from "../validators";
 import { createUser } from "../core/utils/user.util";
 import { HttpException } from "../core/exeption";
-import { checkToken } from "../core/middleware";
 
 const router = express.Router();
 const validator = createValidator();
 
-router.use(checkToken);
+// router.use(checkToken);
 
 router.get("/", async (req, res, next) => {
     try {

@@ -33,3 +33,5 @@ app.listen(PORT, async () => {
     await initData();
     console.log(`App is listening on port: ${PORT}!`);
 });
+
+export { app };
