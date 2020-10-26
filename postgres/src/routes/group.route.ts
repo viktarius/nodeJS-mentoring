@@ -2,10 +2,11 @@ import express from "express";
 import { groupService } from "../core/services";
 import { groupMapper } from "../core/mappers";
 import { HttpException } from "../core/exeption";
+import { checkToken } from "../core/middleware";
 
 const router = express.Router();
 
-// router.use(checkToken);
+router.use(checkToken);
 
 router.get("/", async (req, res) => {
     const groups = await groupService.getAllGroups();
