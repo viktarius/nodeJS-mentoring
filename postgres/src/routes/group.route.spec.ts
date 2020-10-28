@@ -3,7 +3,7 @@ import { Server } from 'http';
 
 import { app } from '../app';
 
-const groups = [{
+const mockGroups = [{
     id: 1,
     name: 'first'
 }, {
@@ -14,26 +14,25 @@ const groups = [{
     name: 'third'
 }];
 
-jest.mock('../core/middleware/auth.middleware', () => {
-    const checkToken = jest.fn((req, res, next) => {
+jest.mock('../core/middleware', () => {
+    const mockMiddleware = jest.fn((req, res, next) => {
         next()
     });
-    return {checkToken};
-});
-jest.mock("../core/services/group.service", () => {
-    const getAllGroups = jest.fn(() => Promise.resolve(groups));
-    const getGroupById = jest.fn((g_id) => {
-        const iid = +g_id;
-        return Promise.resolve(groups.filter(({id}) => id === iid))
-    });
-    const addGroup = jest.fn((data) => Promise.resolve([data]));
-    const updateGroup = jest.fn((id, data) => Promise.resolve([data]));
-    const deleteGroup = jest.fn((id) => Promise.resolve('ok'));
-    return {getAllGroups, getGroupById, addGroup, updateGroup, deleteGroup};
+    return {checkToken: mockMiddleware, infoLoggerMiddleware: mockMiddleware, errorMiddleware: mockMiddleware};
 });
 jest.mock("../core/mappers/group.mapper", () => {
     const mockMapper = jest.fn((data) => data);
     return {toDomain: mockMapper, toBase: mockMapper};
+});
+jest.mock("../core/services/group.service", () => {
+    const getAllGroups = jest.fn(() => Promise.resolve(mockGroups));
+    const getGroupById = jest.fn((g_id) =>
+        Promise.resolve(mockGroups.filter(({id}) => id === +g_id))
+    );
+    const addGroup = jest.fn((data) => Promise.resolve([data]));
+    const updateGroup = jest.fn((id, data) => Promise.resolve([data]));
+    const deleteGroup = jest.fn((id) => Promise.resolve('ok'));
+    return {getAllGroups, getGroupById, addGroup, updateGroup, deleteGroup};
 });
 
 let server: Server;
@@ -48,9 +47,9 @@ beforeEach((done) => {
     agent = supertest(server);
 });
 
-describe('/groups', () => {
+describe('/mockGroups', () => {
 
-    it('should response the GET method and get all groups', async (done) => {
+    it('should response the GET method and return all mockGroups', async (done) => {
         const result = await agent
             .get('/groups');
 
