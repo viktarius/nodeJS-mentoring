@@ -47,7 +47,7 @@ beforeEach((done) => {
     agent = supertest(server);
 });
 
-describe('/mockGroups', () => {
+describe('/groups', () => {
 
     it('should response the GET method and return all mockGroups', async (done) => {
         const result = await agent
@@ -101,7 +101,6 @@ describe('/mockGroups', () => {
         expect(result.text).toEqual('ok');
         done();
     });
-
 });
 
 afterEach(done => {

@@ -98,6 +98,16 @@ describe('/users', () => {
         done();
     });
 
+    it('should call the POST method and failed', async (done) => {
+        const body = {login: "Prince"};
+        const result = await agent
+            .post('/users')
+            .send(body);
+
+        expect(result.status).toBe(400);
+        done();
+    });
+
     it('should call the PUT method', async (done) => {
         const body = {
             login: "Prince",
@@ -113,12 +123,13 @@ describe('/users', () => {
         done();
     });
 
-    it('should call the DELETE method', async (done) => {
+    it('should call the PUT method and failed', async (done) => {
+        const body = {};
         const result = await agent
-            .delete('/users/2');
+            .put('/users/3')
+            .send(body);
 
-        expect(result.status).toBe(200);
-        expect(result.text).toEqual('ok');
+        expect(result.status).toBe(400);
         done();
     });
 
@@ -131,7 +142,7 @@ describe('/users', () => {
         done();
     });
 
-    it('should call the GET method', async (done) => {
+    it('should call the POST method for add user into group', async (done) => {
         const result = await agent
             .post('/users/add-group')
             .send({user_id: 2, group_id: 2});
