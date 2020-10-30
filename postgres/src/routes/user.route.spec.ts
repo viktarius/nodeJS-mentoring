@@ -44,16 +44,16 @@ jest.mock("../core/services/user.service", () => {
 let server: Server;
 let agent: supertest.SuperTest<supertest.Test>;
 
-beforeEach((done) => {
-    server = app.listen(4000, err => {
-        if (err) return done(err);
-
-        done();
-    });
-    agent = supertest(server);
-});
-
 describe('/users', () => {
+    beforeAll((done) => {
+        server = app.listen(4000, err => {
+            if (err) return done(err);
+
+            done();
+        });
+        agent = supertest(server);
+    });
+
     it('should response the GET method and return all mockUsers ', async (done) => {
         const result = await agent
             .get('/users');
@@ -151,8 +151,9 @@ describe('/users', () => {
         expect(result.text).toEqual('ok');
         done();
     });
+
+    afterAll(done => {
+        server && server.close(done);
+    });
 });
 
-afterEach(done => {
-    server && server.close(done);
-});

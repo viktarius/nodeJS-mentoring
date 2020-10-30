@@ -38,16 +38,15 @@ jest.mock("../core/services/group.service", () => {
 let server: Server;
 let agent: supertest.SuperTest<supertest.Test>;
 
-beforeEach((done) => {
-    server = app.listen(4000, err => {
-        if (err) return done(err);
-
-        done();
-    });
-    agent = supertest(server);
-});
-
 describe('/groups', () => {
+    beforeAll((done) => {
+        server = app.listen(4000, err => {
+            if (err) return done(err);
+
+            done();
+        });
+        agent = supertest(server);
+    });
 
     it('should response the GET method and return all mockGroups', async (done) => {
         const result = await agent
@@ -101,8 +100,8 @@ describe('/groups', () => {
         expect(result.text).toEqual('ok');
         done();
     });
-});
 
-afterEach(done => {
-    server && server.close(done);
+    afterAll(done => {
+        server && server.close(done);
+    });
 });
