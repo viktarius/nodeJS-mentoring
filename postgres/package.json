@@ -25,7 +25,7 @@
     "express": "^4.17.1",
     "express-joi-validation": "^4.0.4-beta.0",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^0.21.5",
+    "knex": "^2.4.0",
     "pg": "^8.3.3",
     "winston": "^3.3.3"
   },
